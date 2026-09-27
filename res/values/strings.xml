@@ -1058,4 +1058,69 @@
     <string name="ui_choice_help">You can change your choice in the application settings later</string>
     <string name="workgroup">Workgroup</string>
 
+    <!-- Kids watching time limit -->
+    <string name="kids_limit_category_title">Kids watch limit</string>
+    <string name="kids_limit_enabled_title">Enable watch time limit</string>
+    <string name="kids_limit_enabled_summary">Limit daily watching time with forced breaks</string>
+    <string name="kids_limit_daily_title">Daily limit per session</string>
+    <string name="kids_limit_daily_summary">Minutes of playback before a break is forced</string>
+    <string name="kids_limit_rest_title">Rest duration</string>
+    <string name="kids_limit_rest_summary">Minutes of forced rest between sessions</string>
+    <string name="kids_limit_sessions_title">Sessions per day</string>
+    <string name="kids_limit_sessions_summary">How many watch sessions are allowed each day</string>
+    <string name="kids_limit_reset_title">Reset today\'s stats</string>
+    <string name="kids_limit_reset_summary">Clear watched time and restrictions for today (requires PIN)</string>
+    <string name="kids_limit_need_pin">Parent PIN required to change this setting</string>
+
+    <string-array name="kids_limit_minutes_entries">
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>25 minutes</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>60 minutes</item>
+        <item>90 minutes</item>
+        <item>120 minutes</item>
+    </string-array>
+    <string-array name="kids_limit_minutes_values">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+    <string-array name="kids_rest_minutes_entries">
+        <item>1 minute</item>
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+    </string-array>
+    <string-array name="kids_rest_minutes_values">
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="kids_sessions_entries">
+        <item>1 session</item>
+        <item>2 sessions</item>
+        <item>3 sessions</item>
+        <item>4 sessions</item>
+    </string-array>
+    <string-array name="kids_sessions_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>

@@ -61,6 +61,8 @@ import com.archos.filecorelibrary.samba.SambaDiscovery;
 import com.archos.mediacenter.utils.trakt.Trakt;
 import com.archos.mediacenter.utils.trakt.TraktService;
 import com.archos.mediacenter.video.BuildConfig;
+import com.archos.mediacenter.video.player.kidslimit.PinDialogHelper;
+import com.archos.mediacenter.video.player.kidslimit.WatchTimeManager;
 import com.archos.mediacenter.video.CustomApplication;
 import com.archos.mediacenter.video.R;
 import com.archos.mediacenter.video.UiChoiceDialog;
@@ -692,6 +694,9 @@ public class VideoPreferencesCommon implements OnSharedPreferenceChangeListener 
                 startActivity(new Intent(getActivity(), VideoSettingsLicencesActivity.class));
             return false;
         });
+
+        // ---- Kids watch limit preferences ----
+        setupKidsLimitPreferences();
 
         mDecChoicePreferences = (ListPreference) findPreference(KEY_DEC_CHOICE);
         mAudioInterfaceChoicePreferences = (ListPreference) findPreference(KEY_AUDIO_INTERFACE_CHOICE);
@@ -1903,6 +1908,45 @@ public class VideoPreferencesCommon implements OnSharedPreferenceChangeListener 
     /*
         preference helper
      */
+
+    private void setupKidsLimitPreferences() {
+        androidx.preference.SwitchPreferenceCompat enablePref =
+                (androidx.preference.SwitchPreferenceCompat) findPreference(WatchTimeManager.KEY_ENABLED);
+        Preference resetPref = findPreference("kids_limit_reset_stats");
+        if (enablePref == null) return; // preference xml not loaded (should not happen)
+
+        enablePref.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enabling = (Boolean) newValue;
+            android.app.Activity activity = getActivity();
+            if (activity == null) return false;
+            if (enabling) {
+                // first enable: require setting a parent PIN
+                PinDialogHelper.showSetPinDialog(activity, pin -> {
+                    PinDialogHelper.setPin(activity, pin);
+                    enablePref.setChecked(true);
+                    WatchTimeManager.getInstance(activity).resetTodayStats();
+                    android.widget.Toast.makeText(activity, R.string.kids_limit_enabled_title, android.widget.Toast.LENGTH_SHORT).show();
+                });
+                return false; // we handle the toggle ourselves after PIN entry
+            } else {
+                // disabling: verify PIN
+                PinDialogHelper.showVerifyPinDialog(activity, () -> enablePref.setChecked(false));
+                return false;
+            }
+        });
+
+        if (resetPref != null) {
+            resetPref.setOnPreferenceClickListener(preference -> {
+                android.app.Activity activity = getActivity();
+                if (activity == null) return true;
+                PinDialogHelper.showVerifyPinDialog(activity, () -> {
+                    WatchTimeManager.getInstance(activity).resetTodayStats();
+                    android.widget.Toast.makeText(activity, R.string.kids_limit_reset_title, android.widget.Toast.LENGTH_SHORT).show();
+                });
+                return true;
+            });
+        }
+    }
 
     public static class PreferenceHelper{
 

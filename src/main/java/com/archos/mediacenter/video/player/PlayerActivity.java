@@ -104,6 +104,8 @@ import com.archos.environment.ArchosIntents;
 import com.archos.environment.ArchosUtils;
 import com.archos.environment.NetworkState;
 import com.archos.filecorelibrary.FileUtils;
+import com.archos.mediacenter.video.player.kidslimit.KidsLimitOverlay;
+import com.archos.mediacenter.video.player.kidslimit.WatchTimeManager;
 import com.archos.mediacenter.utils.MediaUtils;
 import com.archos.mediacenter.utils.introdb.IntroSegments;
 import com.archos.mediacenter.utils.videodb.IndexHelper;
@@ -354,6 +356,22 @@ public class PlayerActivity extends AppCompatActivity implements PlayerControlle
     private Context mContext;
 
     private View                mRootView;
+    private KidsLimitOverlay    mKidsLimitOverlay;
+    private final WatchTimeManager.Listener mKidsLimitListener = new WatchTimeManager.Listener() {
+        @Override
+        public void onKidsLimitStateChanged(WatchTimeManager.State state, long restRemainingMs,
+                                            long usedTodayMs, int session, int sessionsPerDay) {
+            runOnUiThread(() -> {
+                if (mKidsLimitOverlay != null) {
+                    mKidsLimitOverlay.update(state, restRemainingMs, session, sessionsPerDay);
+                    if (state != WatchTimeManager.State.NORMAL && mPlayer != null
+                            && mPlayer.isPlaying()) {
+                        mPlayer.pause(PlayerController.STATE_OTHER);
+                    }
+                }
+            });
+        }
+    };
     private PlayerController    mPlayerController;
     private View                mPlayerControllerPlaceholder;
     private Player              mPlayer;
@@ -740,6 +758,19 @@ public class PlayerActivity extends AppCompatActivity implements PlayerControlle
         setContentView(R.layout.player);
         mRootView = findViewById(R.id.root);
         mRootView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
+        // Kids watching time limit overlay (added on top of everything in the player view tree)
+        mKidsLimitOverlay = new KidsLimitOverlay(this);
+        mKidsLimitOverlay.setListener(() -> {
+            // rest is over and user tapped the overlay: resume playback
+            if (mPlayer != null) mPlayer.start(PlayerController.STATE_OTHER);
+        });
+        ((android.view.ViewGroup) mRootView).addView(mKidsLimitOverlay.getView());
+        WatchTimeManager kidsManager = WatchTimeManager.getInstance(this);
+        kidsManager.setListener(mKidsLimitListener);
+        mKidsLimitOverlay.update(kidsManager.computeCurrentState(),
+                Math.max(0, kidsManager.getRestEndsAt() - System.currentTimeMillis()),
+                kidsManager.getSession(), kidsManager.getSessionsPerDay());
 
         mRootView.setOnApplyWindowInsetsListener( new View.OnApplyWindowInsetsListener() {
             @Override
@@ -1261,6 +1292,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerControlle
     @Override
     protected void onDestroy() {
         if (log.isDebugEnabled()) log.debug("onDestroy");
+
+        WatchTimeManager.getInstance(this).setListener(null);
 
         // System-driven destruction after Home/screensaver is not an external-player exit.
         // finish() normally sends first; this guarded fallback covers framework finish paths.

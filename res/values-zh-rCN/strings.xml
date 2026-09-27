@@ -939,4 +939,69 @@
     <string name="s_commentary">评论</string>
     <string name="s_lyrics">歌词</string>
     <string name="s_karaoke">卡拉OK</string>
+
+    <!-- 儿童观看时长限制 -->
+    <string name="kids_limit_category_title">儿童观看限制</string>
+    <string name="kids_limit_enabled_title">启用观看时长限制</string>
+    <string name="kids_limit_enabled_summary">限制每日观看时间，强制休息保护眼睛</string>
+    <string name="kids_limit_daily_title">每轮观看时长</string>
+    <string name="kids_limit_daily_summary">连续观看多少分钟后强制休息</string>
+    <string name="kids_limit_rest_title">休息时长</string>
+    <string name="kids_limit_rest_summary">两轮观看之间的强制休息时间</string>
+    <string name="kids_limit_sessions_title">每天观看轮数</string>
+    <string name="kids_limit_sessions_summary">每天允许观看的轮数（如 2 轮 × 30 分钟）</string>
+    <string name="kids_limit_reset_title">重置今日统计</string>
+    <string name="kids_limit_reset_summary">清零今日已看时长并解除限制（需要家长 PIN 码）</string>
+    <string name="kids_limit_need_pin">修改此设置需要家长 PIN 码</string>
+
+    <string-array name="kids_limit_minutes_entries">
+        <item>10 分钟</item>
+        <item>15 分钟</item>
+        <item>20 分钟</item>
+        <item>25 分钟</item>
+        <item>30 分钟</item>
+        <item>45 分钟</item>
+        <item>60 分钟</item>
+        <item>90 分钟</item>
+        <item>120 分钟</item>
+    </string-array>
+    <string-array name="kids_limit_minutes_values">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+    <string-array name="kids_rest_minutes_entries">
+        <item>1 分钟</item>
+        <item>3 分钟</item>
+        <item>5 分钟</item>
+        <item>10 分钟</item>
+        <item>15 分钟</item>
+        <item>20 分钟</item>
+    </string-array>
+    <string-array name="kids_rest_minutes_values">
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="kids_sessions_entries">
+        <item>1 轮</item>
+        <item>2 轮</item>
+        <item>3 轮</item>
+        <item>4 轮</item>
+    </string-array>
+    <string-array name="kids_sessions_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

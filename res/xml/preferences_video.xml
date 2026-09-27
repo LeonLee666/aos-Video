@@ -2,6 +2,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/preferences">
     <PreferenceCategory
+        android:key="preferences_category_kids_limit"
+        android:title="@string/kids_limit_category_title"
+        app:iconSpaceReserved="false" >
+        <SwitchPreferenceCompat
+            android:key="kids_limit_enabled"
+            android:title="@string/kids_limit_enabled_title"
+            android:summary="@string/kids_limit_enabled_summary"
+            app:iconSpaceReserved="false"/>
+        <com.archos.mediacenter.video.player.kidslimit.PinProtectedListPreference
+            android:key="kids_daily_limit_minutes"
+            android:title="@string/kids_limit_daily_title"
+            android:summary="@string/kids_limit_daily_summary"
+            android:dialogTitle="@string/kids_limit_daily_title"
+            android:entries="@array/kids_limit_minutes_entries"
+            android:entryValues="@array/kids_limit_minutes_values"
+            android:defaultValue="30"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+        <com.archos.mediacenter.video.player.kidslimit.PinProtectedListPreference
+            android:key="kids_rest_minutes"
+            android:title="@string/kids_limit_rest_title"
+            android:summary="@string/kids_limit_rest_summary"
+            android:dialogTitle="@string/kids_limit_rest_title"
+            android:entries="@array/kids_rest_minutes_entries"
+            android:entryValues="@array/kids_rest_minutes_values"
+            android:defaultValue="5"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+        <com.archos.mediacenter.video.player.kidslimit.PinProtectedListPreference
+            android:key="kids_sessions_per_day"
+            android:title="@string/kids_limit_sessions_title"
+            android:summary="@string/kids_limit_sessions_summary"
+            android:dialogTitle="@string/kids_limit_sessions_title"
+            android:entries="@array/kids_sessions_entries"
+            android:entryValues="@array/kids_sessions_values"
+            android:defaultValue="2"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+        <Preference
+            android:key="kids_limit_reset_stats"
+            android:title="@string/kids_limit_reset_title"
+            android:summary="@string/kids_limit_reset_summary"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="preferences_about"
         android:title="@string/preferences_about"
         app:iconSpaceReserved="false">

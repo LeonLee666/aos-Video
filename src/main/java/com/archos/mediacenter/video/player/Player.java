@@ -69,6 +69,8 @@ import java.util.TreeSet;
 import android.view.Display.Mode;
 import android.widget.Toast;
 
+import com.archos.mediacenter.video.player.kidslimit.WatchTimeManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -793,6 +795,14 @@ public class Player implements IPlayerControl,
     }
 
     public void start(int state) {
+        // Kids watching time limit: check before entering playing state
+        WatchTimeManager kids = WatchTimeManager.getInstance(mContext);
+        if (kids.isEnabled() && kids.computeCurrentState() != WatchTimeManager.State.NORMAL) {
+            log.debug("kids limit: start blocked, forcing pause");
+            if (mPlayerListener != null) mPlayerListener.onPause(state);
+            pause(state);
+            return;
+        }
         mTargetState = STATE_PLAYING;
         if (state == PlayerController.STATE_NORMAL) {
             mFocusSuspended = false;
@@ -809,6 +819,7 @@ public class Player implements IPlayerControl,
         mMediaPlayer.start();
         mCurrentState = STATE_PLAYING;
         stayAwake(true);
+        WatchTimeManager.getInstance(mContext).onPlaybackStarted();
         if (mPlayerListener != null) mPlayerListener.onPlay(state);
         if (mEffectRenderer != null) mEffectRenderer.onPlay();
     }
@@ -816,6 +827,7 @@ public class Player implements IPlayerControl,
     public void pause(int state) {
         mResumeAfterFocusLoss = false;
         mTargetState = STATE_PAUSED;
+        WatchTimeManager.getInstance(mContext).onPlaybackStopped();
         pausePlayback(state);
     }
 
